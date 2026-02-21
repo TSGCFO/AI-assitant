@@ -48,7 +48,7 @@ create index if not exists semantic_memory_user_idx
   on semantic_memory (user_id, created_at desc);
 
 create index if not exists semantic_memory_embedding_idx
-  on semantic_memory using hnsw (embedding vector_cosine_ops);
+  on semantic_memory using hnsw ((embedding::halfvec(3072)) halfvec_cosine_ops);
 
 create or replace function match_semantic_memory (
   p_user_id text,
@@ -75,14 +75,14 @@ as $$
       sm.message_ids,
       sm.text_chunk,
       sm.created_at,
-      1 - (sm.embedding <=> query_embedding) as similarity_score,
+      1 - ((sm.embedding::halfvec(3072)) <=> (query_embedding::halfvec(3072))) as similarity_score,
       greatest(
         0,
         1 - extract(epoch from (now() - sm.created_at)) / (60 * 60 * 24 * 30)
       ) as recency_score
     from semantic_memory sm
     where sm.user_id = p_user_id
-      and (1 - (sm.embedding <=> query_embedding)) >= match_threshold
+      and (1 - ((sm.embedding::halfvec(3072)) <=> (query_embedding::halfvec(3072)))) >= match_threshold
   )
   select
     ranked.id,
@@ -97,4 +97,3 @@ as $$
   order by final_score desc
   limit match_count;
 $$;
-
