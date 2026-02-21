@@ -72,3 +72,7 @@ Run the migration in `supabase/migrations/202602210001_init_assistant.sql` in yo
 - Icons: `public/icons`
 
 Install on Android from browser menu -> `Install app`.
+
+## Ops and deployment
+
+See `docs/DEPLOYMENT_AND_OPS.md` for migration status, environment checklist, cron jobs, and production verification queries.

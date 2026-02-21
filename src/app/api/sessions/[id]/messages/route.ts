@@ -9,6 +9,11 @@ const messageSchema = z.object({
   role: z.enum(["user", "assistant", "system"]),
   content: z.string().min(1),
   audioUrl: z.string().url().nullable().optional(),
+  format: z.enum(["text", "markdown", "image", "attachment"]).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+  editedAt: z.string().datetime().nullable().optional(),
+  editedFromMessageId: z.string().uuid().nullable().optional(),
+  regenerationRootId: z.string().uuid().nullable().optional(),
 });
 
 export async function GET(
@@ -40,6 +45,11 @@ export async function POST(
       role: body.role,
       content: body.content,
       audioUrl: body.audioUrl,
+      format: body.format,
+      metadata: body.metadata,
+      editedAt: body.editedAt,
+      editedFromMessageId: body.editedFromMessageId,
+      regenerationRootId: body.regenerationRootId,
     });
 
     if (message.role !== "system") {
@@ -57,4 +67,3 @@ export async function POST(
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-

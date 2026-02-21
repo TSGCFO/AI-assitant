@@ -5,6 +5,7 @@ import { getOpenAiClient, hasOpenAiKey } from "@/lib/server/openai";
 
 const schema = z.object({
   input: z.string().min(1),
+  voice: z.string().min(1).max(32).optional(),
 });
 
 export async function POST(req: Request) {
@@ -13,11 +14,11 @@ export async function POST(req: Request) {
       return new Response("OPENAI_API_KEY is not configured.", { status: 400 });
     }
 
-    const { input } = schema.parse(await req.json());
+    const { input, voice } = schema.parse(await req.json());
     const openai = getOpenAiClient();
     const audio = await openai.audio.speech.create({
       model: env.openaiTtsModel,
-      voice: env.openaiTtsVoice,
+      voice: voice ?? env.openaiTtsVoice,
       input,
     });
 

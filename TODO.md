@@ -122,21 +122,21 @@ These are larger, multi-step features that give the application entirely new cap
 
 ## Current Status
 
-- [ ] Session Search
-- [ ] Message Bookmarking / Starring
-- [ ] Export Chat
-- [ ] Session Renaming
-- [ ] Suggested Prompts
-- [ ] Typing Indicators & Better Loading States
-- [ ] Message Editing & Regeneration
-- [ ] Conversation Summary
-- [ ] Multi-Language Support
-- [ ] Conversation Personas / Modes
-- [ ] Markdown & Code Rendering
-- [ ] Message Reactions & Feedback
-- [ ] Image Generation in Chat
-- [ ] File / Image Upload & Analysis
-- [ ] Web Search Integration
-- [ ] Text-to-Speech (TTS) Responses
-- [ ] Daily Briefing / Scheduled Summaries
-- [ ] Smart Reminders & Tasks
+- [x] Session Search
+- [x] Message Bookmarking / Starring
+- [x] Export Chat
+- [x] Session Renaming
+- [x] Suggested Prompts
+- [x] Typing Indicators & Better Loading States
+- [x] Message Editing & Regeneration
+- [x] Conversation Summary
+- [x] Multi-Language Support
+- [x] Conversation Personas / Modes
+- [x] Markdown & Code Rendering
+- [x] Message Reactions & Feedback
+- [x] Image Generation in Chat
+- [x] File / Image Upload & Analysis
+- [x] Web Search Integration
+- [x] Text-to-Speech (TTS) Responses
+- [x] Daily Briefing / Scheduled Summaries
+- [x] Smart Reminders & Tasks
