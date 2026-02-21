@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Daily Assistant PWA
 
-## Getting Started
+Android-first Progressive Web App that provides:
 
-First, run the development server:
+- Streaming chat with OpenAI
+- Voice interaction (hold-to-talk STT/TTS fallback)
+- Realtime voice session bootstrap endpoint
+- Persistent sessions and message history
+- Working memory plus semantic memory retrieval
+- Offline shell plus cached history plus queued outbound sends
+
+## Stack
+
+- Next.js App Router plus TypeScript
+- OpenAI APIs (Responses, Realtime session token, STT, TTS, Embeddings)
+- Supabase Postgres plus pgvector (optional but recommended)
+- Local browser cache plus outbox queue for offline continuity
+
+## Local setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Copy env template:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Configure at least:
+
+- `OPENAI_API_KEY`
+- `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (optional in local dev, required for durable server-side memory)
+
+4. Start dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open `http://localhost:3000` on desktop or Android Chrome.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Database schema
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Run the migration in `supabase/migrations/202602210001_init_assistant.sql` in your Supabase project to provision:
 
-## Learn More
+- `sessions`
+- `messages`
+- `working_memory`
+- `semantic_memory`
+- `match_semantic_memory` RPC for vector retrieval
 
-To learn more about Next.js, take a look at the following resources:
+## API surface
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `POST /api/chat/stream`
+- `POST /api/realtime/session`
+- `POST /api/voice/transcribe`
+- `POST /api/voice/synthesize`
+- `GET|POST /api/sessions`
+- `GET|POST /api/sessions/:id/messages`
+- `DELETE /api/sessions/:id`
+- `POST /api/memory/retrieve`
+- `POST /api/sync/upload`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## PWA notes
 
-## Deploy on Vercel
+- Manifest: `public/manifest.webmanifest`
+- Service worker: `public/sw.js`
+- Icons: `public/icons`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Install on Android from browser menu -> `Install app`.
